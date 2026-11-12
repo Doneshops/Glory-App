@@ -1,13 +1,19 @@
 abstract final class AppRoutes {
   // ── Auth ──────────────────────────────────────────────
   static const String splash = '/';
+  static const String intro = '/intro';
   static const String onboarding = '/onboarding';
   static const String login = '/login';
   static const String register = '/register';
+  static const String reviewSignup = '/signup';
   static const String otp = '/otp';
   static const String createPassword = '/create-password';
   static const String forgotPassword = '/forgot-password';
   static const String subscriptionQuestionnaire = '/subscription-questionnaire';
+
+  // ── Guest ─────────────────────────────────────────────
+  static const String videoLibrary = '/video-library';
+  static const String videoPlayer = '/video-library/player';
 
   // ── Main (Shell) ──────────────────────────────────────
   static const String home = '/home';

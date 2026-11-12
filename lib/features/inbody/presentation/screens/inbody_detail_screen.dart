@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/l10n/l10n_extension.dart';
 import '../../../../core/theme/app_colors.dart';

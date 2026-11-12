@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/audio/splash_sound_service.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/l10n/locale_service.dart';
+import '../../../../core/storage/local_storage.dart';
+import '../../../../core/storage/storage_keys.dart';
 import '../../../../core/utils/onboarding_navigation.dart';
 import '../../../auth/presentation/cubits/user_profile/user_profile_cubit.dart';
 import '../../../../core/router/app_routes.dart';
@@ -114,8 +116,11 @@ final class _SplashScreenState extends State<SplashScreen>
       return;
     }
 
+    // Guests land on the public video library, after the intro on first run.
+    final introSeen =
+        await sl<ILocalStorage>().getBool(StorageKeys.introSeen) ?? false;
     if (!mounted) return;
-    context.go(AppRoutes.login);
+    context.go(introSeen ? AppRoutes.videoLibrary : AppRoutes.intro);
   }
 
   @override

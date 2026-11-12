@@ -19,10 +19,13 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_styles_extension.dart';
 import '../../../../core/utils/camera_permission_utils.dart';
 import '../../../../core/widgets/app_scaffold.dart';
+import '../../../auth/presentation/cubits/user_profile/user_profile_cubit.dart';
 import '../../../coach_chat/presentation/utils/chat_time_formatter.dart';
 import '../../domain/entities/sandy_entities.dart';
 import '../cubits/sandy_chat/sandy_chat_cubit.dart';
+import '../utils/sandy_ai_consent.dart';
 import '../widgets/sandy_attach_sheet.dart';
+import '../widgets/sandy_consent_gate.dart';
 import '../widgets/sandy_document_submit_sheet.dart';
 
 final class GloryAiScreen extends StatelessWidget {
@@ -47,11 +50,25 @@ final class _GloryAiViewState extends State<_GloryAiView> {
   final _inputFocusNode = FocusNode();
   var _canSend = false;
 
+  /// `null` while the stored answer is being read.
+  bool? _hasAiConsent;
+
   @override
   void initState() {
     super.initState();
     _inputController.addListener(_onInputChanged);
     _scrollController.addListener(_onScroll);
+    _loadAiConsent();
+  }
+
+  Future<void> _loadAiConsent() async {
+    final consent = await hasSandyAiConsent();
+    if (mounted) setState(() => _hasAiConsent = consent);
+  }
+
+  Future<void> _grantAiConsent() async {
+    await grantSandyAiConsent();
+    if (mounted) setState(() => _hasAiConsent = true);
   }
 
   void _onInputChanged() {
@@ -157,6 +174,16 @@ final class _GloryAiViewState extends State<_GloryAiView> {
 
   @override
   Widget build(BuildContext context) {
+    final hasAiConsent = _hasAiConsent;
+    if (hasAiConsent != true) {
+      return AppScaffold(
+        appBar: const _SandyChatHeader(),
+        body: hasAiConsent == null
+            ? const SizedBox.shrink()
+            : SandyConsentGate(onAgree: _grantAiConsent),
+      );
+    }
+
     return BlocConsumer<SandyChatCubit, SandyChatState>(
       listenWhen: (previous, current) =>
           previous.messages != current.messages ||
@@ -589,8 +616,21 @@ final class _SandyActionChip extends StatelessWidget {
 final class _SandyWelcomeCard extends StatelessWidget {
   const _SandyWelcomeCard();
 
+  static String? _firstName(String? fullName) {
+    final trimmed = fullName?.trim();
+    if (trimmed == null || trimmed.isEmpty) return null;
+    return trimmed.split(RegExp(r'\s+')).first;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final firstName = _firstName(
+      context.watch<UserProfileCubit>().state.member?.fullName,
+    );
+    final welcomeBody = firstName != null
+        ? context.l10n.sandyWelcomeBodyPersonalized(firstName)
+        : context.l10n.sandyWelcomeBody;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16, top: 8),
       child: Container(
@@ -619,7 +659,7 @@ final class _SandyWelcomeCard extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              context.l10n.sandyWelcomeBody,
+              welcomeBody,
               textAlign: TextAlign.center,
               style: context.captionRegular.copyWith(
                 color: AppColors.neutral600,

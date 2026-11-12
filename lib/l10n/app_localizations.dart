@@ -1862,8 +1862,26 @@ abstract class AppLocalizations {
   /// No description provided for @loginEmailOrPhoneHint.
   ///
   /// In en, this message translates to:
-  /// **'Please enter your email or phone number along with your password to access your account.'**
+  /// **'Enter your member ID or username and password to access your account.'**
   String get loginEmailOrPhoneHint;
+
+  /// No description provided for @loginIdentifier.
+  ///
+  /// In en, this message translates to:
+  /// **'Member ID or username'**
+  String get loginIdentifier;
+
+  /// No description provided for @enterLoginIdentifier.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your member ID or username'**
+  String get enterLoginIdentifier;
+
+  /// No description provided for @pleaseEnterLoginIdentifier.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your member ID or username'**
+  String get pleaseEnterLoginIdentifier;
 
   /// No description provided for @loginSubtitle.
   ///
@@ -2879,6 +2897,12 @@ abstract class AppLocalizations {
   /// **'Ask me about workouts, nutrition, or your membership. You can also attach a lab result or an X-ray.'**
   String get sandyWelcomeBody;
 
+  /// No description provided for @sandyWelcomeBodyPersonalized.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {name}. Ask me about workouts, nutrition, or your membership. You can also attach a lab result or an X-ray.'**
+  String sandyWelcomeBodyPersonalized(String name);
+
   /// No description provided for @sandyToolbarNew.
   ///
   /// In en, this message translates to:
@@ -3038,7 +3062,7 @@ abstract class AppLocalizations {
   /// No description provided for @sandyMedicalConsent.
   ///
   /// In en, this message translates to:
-  /// **'This file is private to you and Sandy. Coaches and staff cannot see it. Sandy explains and refers — this is not a diagnosis. By continuing you agree to store a private summary on your profile.'**
+  /// **'Inside the app, this file is visible only to you and Sandy — coaches and staff can\'t see it. To analyse it, it is sent to the third-party AI provider Sandy relies on. Sandy explains and refers — this is not a diagnosis. By continuing you agree to store a private summary on your profile.'**
   String get sandyMedicalConsent;
 
   /// No description provided for @sandyDocumentNoteHint.
@@ -3766,6 +3790,342 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'—'**
   String get notAvailable;
+
+  /// No description provided for @orLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get orLabel;
+
+  /// No description provided for @guestBrowseVideosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore our video library'**
+  String get guestBrowseVideosTitle;
+
+  /// No description provided for @guestBrowseVideosSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts and tips, no sign-in needed'**
+  String get guestBrowseVideosSubtitle;
+
+  /// No description provided for @videoLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Video Library'**
+  String get videoLibraryTitle;
+
+  /// No description provided for @videoLibrarySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search videos'**
+  String get videoLibrarySearchHint;
+
+  /// No description provided for @videoLibraryAllCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get videoLibraryAllCategories;
+
+  /// No description provided for @videoLibraryEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No videos yet'**
+  String get videoLibraryEmptyTitle;
+
+  /// No description provided for @videoLibraryEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'New videos will appear here soon.'**
+  String get videoLibraryEmptyDescription;
+
+  /// No description provided for @videoLibraryNoResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching videos'**
+  String get videoLibraryNoResultsTitle;
+
+  /// No description provided for @videoLibraryNoResultsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search or category.'**
+  String get videoLibraryNoResultsDescription;
+
+  /// No description provided for @videoAudienceMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Men'**
+  String get videoAudienceMale;
+
+  /// No description provided for @videoAudienceFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get videoAudienceFemale;
+
+  /// No description provided for @videoOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the video'**
+  String get videoOpenFailed;
+
+  /// No description provided for @videoLibraryLoadFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load videos'**
+  String get videoLibraryLoadFailedTitle;
+
+  /// No description provided for @videoLibraryLoadFailedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get videoLibraryLoadFailedDescription;
+
+  /// No description provided for @videoAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About this video'**
+  String get videoAboutTitle;
+
+  /// No description provided for @signupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your details to create your account.'**
+  String get signupSubtitle;
+
+  /// No description provided for @phoneOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number (optional)'**
+  String get phoneOptional;
+
+  /// No description provided for @reenterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your password'**
+  String get reenterPassword;
+
+  /// No description provided for @signupAccountExists.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have an account — log in instead'**
+  String get signupAccountExists;
+
+  /// No description provided for @signupUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-up isn\'t available right now'**
+  String get signupUnavailable;
+
+  /// No description provided for @signupTryLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later'**
+  String get signupTryLater;
+
+  /// No description provided for @introSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get introSkip;
+
+  /// No description provided for @introNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get introNext;
+
+  /// No description provided for @introGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get introGetStarted;
+
+  /// No description provided for @introPage1Tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Fitness for everyone'**
+  String get introPage1Tag;
+
+  /// No description provided for @introPage1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your fitness journey starts here'**
+  String get introPage1Title;
+
+  /// No description provided for @introPage1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A complete fitness companion with workouts, guided videos and tools to help you reach your goals.'**
+  String get introPage1Body;
+
+  /// No description provided for @introPage2Tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Video library'**
+  String get introPage2Tag;
+
+  /// No description provided for @introPage2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn every exercise the right way'**
+  String get introPage2Title;
+
+  /// No description provided for @introPage2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Step-by-step videos for every machine and muscle group, for both men and women.'**
+  String get introPage2Body;
+
+  /// No description provided for @introPage3Tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Free access'**
+  String get introPage3Tag;
+
+  /// No description provided for @introPage3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Train anytime, anywhere'**
+  String get introPage3Title;
+
+  /// No description provided for @introPage3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the library for free, no account needed. Log in anytime to unlock bookings, plans and more.'**
+  String get introPage3Body;
+
+  /// No description provided for @videoLibraryWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get videoLibraryWelcome;
+
+  /// No description provided for @videoLibraryHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore workouts'**
+  String get videoLibraryHeroTitle;
+
+  /// No description provided for @videoLibraryHeroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Guided exercise videos for every muscle group'**
+  String get videoLibraryHeroSubtitle;
+
+  /// No description provided for @videoFilterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter videos'**
+  String get videoFilterTitle;
+
+  /// No description provided for @videoFilterAudience.
+  ///
+  /// In en, this message translates to:
+  /// **'Audience'**
+  String get videoFilterAudience;
+
+  /// No description provided for @videoFilterMuscle.
+  ///
+  /// In en, this message translates to:
+  /// **'Target muscle'**
+  String get videoFilterMuscle;
+
+  /// No description provided for @videoFilterReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get videoFilterReset;
+
+  /// No description provided for @videoFilterApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Show results'**
+  String get videoFilterApply;
+
+  /// No description provided for @videoRegionCore.
+  ///
+  /// In en, this message translates to:
+  /// **'Core'**
+  String get videoRegionCore;
+
+  /// No description provided for @videoRegionLowerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower body'**
+  String get videoRegionLowerBody;
+
+  /// No description provided for @videoRegionUpperBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper body'**
+  String get videoRegionUpperBody;
+
+  /// No description provided for @videoRegionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get videoRegionOther;
+
+  /// No description provided for @sandyConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you chat with Sandy'**
+  String get sandyConsentTitle;
+
+  /// No description provided for @sandyConsentIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandy is an AI assistant. To answer you, it relies on an external AI service.'**
+  String get sandyConsentIntro;
+
+  /// No description provided for @sandyConsentDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What is shared'**
+  String get sandyConsentDataTitle;
+
+  /// No description provided for @sandyConsentDataBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your messages, and any files or photos you attach, are sent to a third-party AI provider to generate Sandy\'s replies.'**
+  String get sandyConsentDataBody;
+
+  /// No description provided for @sandyConsentMedicalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not medical advice'**
+  String get sandyConsentMedicalTitle;
+
+  /// No description provided for @sandyConsentMedicalBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sandy gives general guidance and does not replace a doctor or specialist.'**
+  String get sandyConsentMedicalBody;
+
+  /// No description provided for @sandyConsentChoiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your choice'**
+  String get sandyConsentChoiceTitle;
+
+  /// No description provided for @sandyConsentChoiceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is sent until you agree. You can keep using the rest of the app without Sandy.'**
+  String get sandyConsentChoiceBody;
+
+  /// No description provided for @sandyConsentPrivacyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the privacy policy'**
+  String get sandyConsentPrivacyLink;
+
+  /// No description provided for @sandyConsentAgree.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree, start chatting'**
+  String get sandyConsentAgree;
 }
 
 class _AppLocalizationsDelegate

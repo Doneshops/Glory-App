@@ -27,14 +27,40 @@ final class AuthInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    if (err.response?.statusCode == 401) {
+    if (err.response?.statusCode == 401 &&
+        _shouldRecoverSession(err.requestOptions)) {
       final refreshed = await _tryRefreshToken(err.requestOptions);
       if (refreshed != null) {
         handler.resolve(refreshed);
         return;
       }
+      await _clearStoredSession();
+      AuthTokenEvents.notifySessionExpired();
     }
     handler.next(err);
+  }
+
+  bool _shouldRecoverSession(RequestOptions options) {
+    // A guest request (e.g. browsing the video library) carries no token, so
+    // a 401 there has no session to refresh or expire.
+    if (!options.headers.containsKey('Authorization')) return false;
+
+    const publicAuthPaths = {
+      Endpoints.login,
+      Endpoints.register,
+      Endpoints.verifyOtp,
+      Endpoints.resendOtp,
+      Endpoints.completeRegistration,
+      Endpoints.forgotPassword,
+      Endpoints.resetPassword,
+    };
+    return !publicAuthPaths.contains(options.path);
+  }
+
+  Future<void> _clearStoredSession() async {
+    await _secureStorage.delete(StorageKeys.accessToken);
+    await _secureStorage.delete(StorageKeys.refreshToken);
+    await _secureStorage.delete(StorageKeys.userId);
   }
 
   Future<Response<dynamic>?> _tryRefreshToken(RequestOptions original) async {
@@ -76,9 +102,6 @@ final class AuthInterceptor extends Interceptor {
       original.headers['Authorization'] = 'Bearer $newAccessToken';
       return dio.fetch<dynamic>(original);
     } catch (_) {
-      await _secureStorage.delete(StorageKeys.accessToken);
-      await _secureStorage.delete(StorageKeys.refreshToken);
-      await _secureStorage.delete(StorageKeys.userId);
       return null;
     }
   }

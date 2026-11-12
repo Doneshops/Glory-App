@@ -31,8 +31,8 @@ final class UserProfileState extends Equatable {
 
   String get displayPhone {
     final profile = member;
-    if (profile == null) return '';
-    return '${profile.phoneCountryCode} ${profile.phone}';
+    if (profile == null || profile.phone.isEmpty) return '';
+    return '${profile.phoneCountryCode} ${profile.phone}'.trim();
   }
 
   String displayBirthDate(AppLocalizations l10n) =>

@@ -5,6 +5,7 @@ import '../core/l10n/fallback_messages.dart';
 import '../core/l10n/l10n_extension.dart';
 import '../core/platform/navigation_mode_service.dart';
 import '../core/theme/app_theme.dart';
+import '../core/network/session_expired_listener.dart';
 import '../core/widgets/secure_screen_scope.dart';
 import 'app_bloc_providers.dart';
 import 'cubits/locale/app_locale_cubit.dart';
@@ -42,13 +43,15 @@ final class _AppView extends StatelessWidget {
         final content = child ?? const SizedBox.shrink();
         final extraBottom = NavigationModeService.extraBottomPadding;
 
-        return SecureScreenScope(
-          child: extraBottom > 0
-              ? Padding(
-                  padding: EdgeInsets.only(bottom: extraBottom),
-                  child: content,
-                )
-              : content,
+        return SessionExpiredListener(
+          child: SecureScreenScope(
+            child: extraBottom > 0
+                ? Padding(
+                    padding: EdgeInsets.only(bottom: extraBottom),
+                    child: content,
+                  )
+                : content,
+          ),
         );
       },
     );

@@ -31,8 +31,13 @@ final class MemberModel {
   final String id;
   final String memberCode;
   final String fullName;
+  // System-created members may have no email; the server sends null.
+  @JsonKey(defaultValue: '')
   final String email;
+  // Accounts from in-app sign-up may have no phone; the server sends null.
+  @JsonKey(defaultValue: '')
   final String phone;
+  @JsonKey(defaultValue: '')
   final String phoneCountryCode;
   final String? avatarUrl;
   final String? gender;

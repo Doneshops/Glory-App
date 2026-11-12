@@ -2,6 +2,7 @@ import '../../../../core/result/result.dart';
 import '../entities/auth_session_entity.dart';
 import '../entities/member_entity.dart';
 import '../entities/otp_sent_entity.dart';
+import '../entities/review_signup_result.dart';
 
 abstract interface class AuthRepository {
   Future<Result<OtpSentEntity>> register({
@@ -41,6 +42,19 @@ abstract interface class AuthRepository {
   Future<Result<AuthSessionEntity>> login({
     required String identifier,
     required String password,
+  });
+
+  /// Server switch for the sign-up screen (`GET /mobile/app-config`).
+  Future<bool> isSignupEnabled();
+
+  /// Creates the account and stores the session on success.
+  Future<ReviewSignupResult> reviewSignup({
+    required String fullName,
+    required String email,
+    required String password,
+    required String passwordConfirm,
+    String? phone,
+    String? phoneCountryCode,
   });
 
   /// Returns `true` when a valid session exists (kept or refreshed).

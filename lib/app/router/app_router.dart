@@ -22,6 +22,7 @@ import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/otp_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
+import '../../features/auth/presentation/screens/review_signup_screen.dart';
 import '../../features/onboarding/domain/entities/onboarding_prefill_entity.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/subscription_questionnaire/presentation/screens/questionnaire_screen.dart';
@@ -41,6 +42,7 @@ import '../../features/family/domain/entities/family_member_entity.dart';
 import '../../features/family/presentation/screens/add_family_member_screen.dart';
 import '../../features/family/presentation/screens/family_screen.dart';
 import '../../features/glory_ai/presentation/screens/glory_ai_screen.dart';
+import '../../features/intro/presentation/screens/intro_screen.dart';
 import '../../features/glory_ai/presentation/screens/sandy_conversations_list_screen.dart';
 import '../../features/glory_ai/presentation/screens/sandy_health_files_screen.dart';
 import '../../features/home/presentation/screens/main_layout.dart';
@@ -51,6 +53,9 @@ import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/subscriptions/presentation/screens/subscriptions_screen.dart';
 import '../../features/workouts/presentation/screens/workout_detail_screen.dart';
 import '../../features/workouts/presentation/screens/workouts_screen.dart';
+import '../../features/video_library/domain/entities/library_video_entity.dart';
+import '../../features/video_library/presentation/screens/video_library_screen.dart';
+import '../../features/video_library/presentation/screens/video_player_screen.dart';
 import '../../core/widgets/app_coach_chat_fab_overlay.dart';
 
 /// Application route configuration.
@@ -78,6 +83,13 @@ final class AppRouter {
       builder: (_, _) => const SplashScreenProvider(),
     ),
 
+    // ── Intro (guests, first run) ────────────────────────
+    GoRoute(
+      path: AppRoutes.intro,
+      name: 'intro',
+      builder: (_, _) => const IntroScreen(),
+    ),
+
     // ── Auth ─────────────────────────────────────────────
     GoRoute(
       path: AppRoutes.login,
@@ -88,6 +100,24 @@ final class AppRouter {
       path: AppRoutes.register,
       name: 'register',
       builder: (_, _) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.reviewSignup,
+      name: 'reviewSignup',
+      builder: (_, _) => const ReviewSignupScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.videoLibrary,
+      name: 'videoLibrary',
+      builder: (_, _) => const VideoLibraryScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.videoPlayer,
+      name: 'videoPlayer',
+      redirect: (_, state) =>
+          state.extra is LibraryVideoEntity ? null : AppRoutes.videoLibrary,
+      builder: (_, state) =>
+          VideoPlayerScreen(video: state.extra! as LibraryVideoEntity),
     ),
     GoRoute(
       path: AppRoutes.otp,

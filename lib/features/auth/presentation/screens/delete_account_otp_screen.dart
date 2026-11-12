@@ -102,7 +102,8 @@ final class _DeleteAccountOtpScreenState extends State<DeleteAccountOtpScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(context.l10n.accountDeletedSuccess)),
             );
-            context.go(AppRoutes.register);
+            // Back to the guest home, not the legacy register screen.
+            context.go(AppRoutes.videoLibrary);
             return;
           }
 

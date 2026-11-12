@@ -235,6 +235,13 @@ final class _MultiChoiceField extends StatelessWidget {
                 label: OnboardingQuestionLogic.optionLabel(option, locale),
                 selected: value.contains(option.value),
                 onTap: () {
+                  if (!OnboardingQuestionLogic.allowsMultipleSelections(
+                    question,
+                  )) {
+                    onChanged([option.value]);
+                    return;
+                  }
+
                   final next = Set<String>.from(value);
                   if (next.contains(option.value)) {
                     next.remove(option.value);

@@ -37,12 +37,6 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need camera access to scan QR codes for gym check-in and to take photos for your profile.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We use your location to provide gym-related features. If you allow always access, this may include updates when the app is in the background.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We use your location while the app is open to show nearby gym information and related services.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need microphone access when you record video.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need permission to save photos you take in the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

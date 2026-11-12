@@ -58,6 +58,12 @@ import '../../features/nutrition_plans/domain/repositories/nutrition_plans_repos
 import '../../features/nutrition_plans/presentation/cubits/nutrition_plan_current/nutrition_plan_current_cubit.dart';
 import '../../features/nutrition_plans/presentation/cubits/nutrition_plan_detail/nutrition_plan_detail_cubit.dart';
 import '../../features/nutrition_plans/presentation/cubits/nutrition_plans_list/nutrition_plans_list_cubit.dart';
+import '../../features/auth/data/datasources/review_signup_remote_api_service.dart';
+import '../../features/auth/presentation/cubits/review_signup/review_signup_cubit.dart';
+import '../../features/video_library/data/datasources/video_library_remote_api_service.dart';
+import '../../features/video_library/data/repositories/video_library_repository_impl.dart';
+import '../../features/video_library/domain/repositories/video_library_repository.dart';
+import '../../features/video_library/presentation/cubits/video_library/video_library_cubit.dart';
 import '../../features/subscriptions/data/datasources/subscriptions_api.dart';
 import '../../features/subscriptions/data/datasources/subscriptions_remote_api_service.dart';
 import '../../features/subscriptions/data/repositories/subscriptions_repository_impl.dart';
@@ -122,6 +128,7 @@ Future<void> setupServiceLocator() async {
   _registerBodyComposition();
   _registerInbody();
   _registerNutritionPlans();
+  _registerVideoLibrary();
   _registerSubscriptions();
   _registerNotifications();
   _registerWorkouts();
@@ -173,14 +180,18 @@ void _registerAuth() {
   sl.registerLazySingleton<AuthRemoteApiService>(
     () => AuthRemoteApiService(sl(), sl()),
   );
+  sl.registerLazySingleton<ReviewSignupRemoteApiService>(
+    () => ReviewSignupRemoteApiService(sl()),
+  );
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(sl(), sl()),
+    () => AuthRepositoryImpl(sl(), sl(), sl()),
   );
 
   sl.registerLazySingleton<AppLocaleCubit>(() => AppLocaleCubit());
   sl.registerLazySingleton<UserProfileCubit>(() => UserProfileCubit(sl()));
 
   sl.registerFactory<RegisterCubit>(() => RegisterCubit(sl()));
+  sl.registerFactory<ReviewSignupCubit>(() => ReviewSignupCubit(sl()));
   sl.registerFactory<ForgotPasswordCubit>(() => ForgotPasswordCubit(sl()));
   sl.registerFactory<OtpCubit>(() => OtpCubit(sl()));
   sl.registerFactory<CreatePasswordCubit>(() => CreatePasswordCubit(sl()));
@@ -317,6 +328,16 @@ void _registerNutritionPlans() {
   sl.registerFactoryParam<NutritionPlanDetailCubit, String, void>(
     (planId, _) => NutritionPlanDetailCubit(sl(), planId: planId),
   );
+}
+
+void _registerVideoLibrary() {
+  sl.registerLazySingleton<VideoLibraryRemoteApiService>(
+    () => VideoLibraryRemoteApiService(sl()),
+  );
+  sl.registerLazySingleton<VideoLibraryRepository>(
+    () => VideoLibraryRepositoryImpl(sl()),
+  );
+  sl.registerFactory<VideoLibraryCubit>(() => VideoLibraryCubit(sl()));
 }
 
 void _registerSubscriptions() {

@@ -1,15 +1,29 @@
 import 'dart:async';
 
-/// Broadcasts when the access token is refreshed so long-lived connections
-/// (e.g. Socket.IO) can reconnect with the new credentials.
+/// Broadcasts auth token lifecycle events for Dio and long-lived connections.
 abstract final class AuthTokenEvents {
-  static final _controller = StreamController<void>.broadcast();
+  static final _refreshedController = StreamController<void>.broadcast();
+  static final _sessionExpiredController = StreamController<void>.broadcast();
 
-  static Stream<void> get onRefreshed => _controller.stream;
+  static bool _sessionExpiredPending = false;
+
+  static Stream<void> get onRefreshed => _refreshedController.stream;
+
+  /// Fired once when a protected API returns 401 and refresh cannot recover.
+  static Stream<void> get onSessionExpired => _sessionExpiredController.stream;
 
   static void notifyRefreshed() {
-    if (!_controller.isClosed) {
-      _controller.add(null);
+    _sessionExpiredPending = false;
+    if (!_refreshedController.isClosed) {
+      _refreshedController.add(null);
+    }
+  }
+
+  static void notifySessionExpired() {
+    if (_sessionExpiredPending) return;
+    _sessionExpiredPending = true;
+    if (!_sessionExpiredController.isClosed) {
+      _sessionExpiredController.add(null);
     }
   }
 }

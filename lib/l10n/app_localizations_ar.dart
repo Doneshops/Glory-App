@@ -82,7 +82,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appointment => 'موعد';
 
   @override
-  String get appointments => 'المواعيد';
+  String get appointments => 'جدولي';
 
   @override
   String get arabic => 'العربية';
@@ -937,7 +937,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginEmailOrPhoneHint =>
-      'الرجاء إدخال بريدك الإلكتروني او رقم هاتفك ومع كلمة المرور للوصول إلى حسابك.';
+      'الرجاء إدخال رقم العضو أو اسم المستخدم مع كلمة المرور للوصول إلى حسابك.';
+
+  @override
+  String get loginIdentifier => 'رقم العضو أو اسم المستخدم';
+
+  @override
+  String get enterLoginIdentifier => 'أدخل رقم العضو أو اسم المستخدم';
+
+  @override
+  String get pleaseEnterLoginIdentifier =>
+      'يرجى إدخال رقم العضو أو اسم المستخدم';
 
   @override
   String get loginSubtitle => 'سجّل دخولك للمتابعة';
@@ -1481,6 +1491,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'اسألني عن التمارين، التغذية، أو اشتراكك. تقدر كمان ترفع نتيجة تحليل أو صورة أشعة من زر الإرفاق.';
 
   @override
+  String sandyWelcomeBodyPersonalized(String name) {
+    return 'مرحباً $name. اسألني عن التمارين، التغذية، أو اشتراكك. تقدر كمان ترفع نتيجة تحليل أو صورة أشعة من زر الإرفاق.';
+  }
+
+  @override
   String get sandyToolbarNew => 'جديدة';
 
   @override
@@ -1569,7 +1584,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sandyMedicalConsent =>
-      'الملف خاص بك وبساندي فقط، ولن يظهر للمدرب أو الإدارة. الشرح توجيه للسلامة وليس تشخيصاً طبياً. بمواصلتك أنت توافق على حفظ ملخص خاص في ملفك.';
+      'يظهر الملف لك ولساندي فقط داخل التطبيق، ولن يراه المدرب أو الإدارة. ولتحليله يُرسل إلى مزوّد خدمة الذكاء الاصطناعي الخارجي الذي يعتمد عليه ساندي. الشرح توجيه للسلامة وليس تشخيصاً طبياً. بمواصلتك أنت توافق على حفظ ملخص خاص في ملفك.';
 
   @override
   String get sandyDocumentNoteHint =>
@@ -1949,4 +1964,184 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notAvailable => '—';
+
+  @override
+  String get orLabel => 'أو';
+
+  @override
+  String get guestBrowseVideosTitle => 'تصفّح مكتبة الفيديوهات';
+
+  @override
+  String get guestBrowseVideosSubtitle => 'تمارين ونصائح بدون تسجيل دخول';
+
+  @override
+  String get videoLibraryTitle => 'مكتبة الفيديوهات';
+
+  @override
+  String get videoLibrarySearchHint => 'ابحث عن فيديو';
+
+  @override
+  String get videoLibraryAllCategories => 'الكل';
+
+  @override
+  String get videoLibraryEmptyTitle => 'لا توجد فيديوهات حاليًا';
+
+  @override
+  String get videoLibraryEmptyDescription =>
+      'ستظهر الفيديوهات الجديدة هنا قريبًا.';
+
+  @override
+  String get videoLibraryNoResultsTitle => 'لا توجد نتائج مطابقة';
+
+  @override
+  String get videoLibraryNoResultsDescription =>
+      'جرّب كلمة بحث أو تصنيفًا مختلفًا.';
+
+  @override
+  String get videoAudienceMale => 'رجال';
+
+  @override
+  String get videoAudienceFemale => 'سيدات';
+
+  @override
+  String get videoOpenFailed => 'تعذّر تشغيل الفيديو';
+
+  @override
+  String get videoLibraryLoadFailedTitle => 'تعذّر تحميل الفيديوهات';
+
+  @override
+  String get videoLibraryLoadFailedDescription =>
+      'تأكد من اتصالك بالإنترنت وحاول مرة أخرى.';
+
+  @override
+  String get videoAboutTitle => 'عن الفيديو';
+
+  @override
+  String get signupSubtitle => 'أدخل بياناتك لإنشاء حسابك.';
+
+  @override
+  String get phoneOptional => 'رقم الهاتف (اختياري)';
+
+  @override
+  String get reenterPassword => 'أعد إدخال كلمة المرور';
+
+  @override
+  String get signupAccountExists =>
+      'لديك حساب بالفعل — سجّل الدخول بدلًا من ذلك';
+
+  @override
+  String get signupUnavailable => 'التسجيل غير متاح حاليًا';
+
+  @override
+  String get signupTryLater => 'محاولات كثيرة. يرجى المحاولة لاحقًا';
+
+  @override
+  String get introSkip => 'تخطي';
+
+  @override
+  String get introNext => 'التالي';
+
+  @override
+  String get introGetStarted => 'ابدأ الآن';
+
+  @override
+  String get introPage1Tag => 'اللياقة للجميع';
+
+  @override
+  String get introPage1Title => 'رحلتك الرياضية تبدأ من هنا';
+
+  @override
+  String get introPage1Body =>
+      'تطبيق رياضي متكامل يضم تمارين وفيديوهات إرشادية وأدوات تساعدك توصل لهدفك.';
+
+  @override
+  String get introPage2Tag => 'مكتبة الفيديوهات';
+
+  @override
+  String get introPage2Title => 'اتعلّم كل تمرين بالطريقة الصحيحة';
+
+  @override
+  String get introPage2Body =>
+      'فيديوهات خطوة بخطوة لكل جهاز وكل عضلة، للرجال والسيدات.';
+
+  @override
+  String get introPage3Tag => 'دخول مجاني';
+
+  @override
+  String get introPage3Title => 'اتمرّن في أي وقت ومن أي مكان';
+
+  @override
+  String get introPage3Body =>
+      'تصفّح المكتبة مجانًا بدون حساب، وسجّل دخولك في أي وقت للحجوزات والخطط والمزيد.';
+
+  @override
+  String get videoLibraryWelcome => 'أهلًا بيك';
+
+  @override
+  String get videoLibraryHeroTitle => 'استكشف التمارين';
+
+  @override
+  String get videoLibraryHeroSubtitle =>
+      'فيديوهات تمارين إرشادية لكل مجموعة عضلية';
+
+  @override
+  String get videoFilterTitle => 'تصفية الفيديوهات';
+
+  @override
+  String get videoFilterAudience => 'الفئة';
+
+  @override
+  String get videoFilterMuscle => 'العضلة المستهدفة';
+
+  @override
+  String get videoFilterReset => 'إعادة تعيين';
+
+  @override
+  String get videoFilterApply => 'عرض النتائج';
+
+  @override
+  String get videoRegionCore => 'منطقة الجذع';
+
+  @override
+  String get videoRegionLowerBody => 'الجزء السفلي';
+
+  @override
+  String get videoRegionUpperBody => 'الجزء العلوي';
+
+  @override
+  String get videoRegionOther => 'أخرى';
+
+  @override
+  String get sandyConsentTitle => 'قبل أن تبدأ مع ساندي';
+
+  @override
+  String get sandyConsentIntro =>
+      'ساندي مساعد يعمل بالذكاء الاصطناعي، ويعتمد في ردوده على خدمة ذكاء اصطناعي خارجية.';
+
+  @override
+  String get sandyConsentDataTitle => 'ما الذي تتم مشاركته';
+
+  @override
+  String get sandyConsentDataBody =>
+      'رسائلك، وأي ملفات أو صور ترفقها، تُرسل إلى مزوّد خدمة ذكاء اصطناعي خارجي لإنشاء ردود ساندي.';
+
+  @override
+  String get sandyConsentMedicalTitle => 'ليست استشارة طبية';
+
+  @override
+  String get sandyConsentMedicalBody =>
+      'ساندي يقدّم إرشادات عامة ولا يغني عن الطبيب أو المختص.';
+
+  @override
+  String get sandyConsentChoiceTitle => 'القرار لك';
+
+  @override
+  String get sandyConsentChoiceBody =>
+      'لن يُرسل أي شيء قبل موافقتك، ويمكنك استخدام باقي التطبيق بدون ساندي.';
+
+  @override
+  String get sandyConsentPrivacyLink => 'اطّلع على سياسة الخصوصية';
+
+  @override
+  String get sandyConsentAgree => 'أوافق، لنبدأ';
 }

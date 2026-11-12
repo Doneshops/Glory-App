@@ -26,6 +26,14 @@ abstract final class AppValidators {
     return null;
   }
 
+  // ── Login identifier (member ID or username) ─────────────────────────────
+  static String? loginIdentifier(AppLocalizations l10n, String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return l10n.pleaseEnterLoginIdentifier;
+    }
+    return null;
+  }
+
   // ── Email or Phone ────────────────────────────────────────────────────────
   static String? emailOrPhone(AppLocalizations l10n, String? value) {
     if (value == null || value.trim().isEmpty) {

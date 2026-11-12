@@ -9,4 +9,4 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
   await AppInitializer.initialize();
   runApp(const App());
-}
+} 

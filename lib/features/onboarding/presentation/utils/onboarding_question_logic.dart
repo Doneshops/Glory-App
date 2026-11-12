@@ -63,4 +63,39 @@ abstract final class OnboardingQuestionLogic {
     String locale,
   ) =>
       locale.startsWith('ar') ? option.labelAr : option.labelEn;
+
+  /// Some API questions are typed as MULTI_CHOICE but are mutually exclusive
+  /// (e.g. weights vs cardio vs both).
+  static bool allowsMultipleSelections(OnboardingQuestionEntity question) {
+    if (question.type != OnboardingQuestionType.multiChoice) return false;
+
+    final combined = '${question.questionEn} ${question.questionAr}';
+    final lower = combined.toLowerCase();
+
+    if (lower.contains('multi') ||
+        combined.contains('أكثر من') ||
+        combined.contains('عدة') ||
+        combined.contains('اختر كل')) {
+      return true;
+    }
+
+    if (lower.contains('prefer') || combined.contains('تفضل')) {
+      return false;
+    }
+
+    final values = question.options.map((o) => o.value.toUpperCase()).toSet();
+    if (values.contains('BOTH') && values.length <= 4) {
+      return false;
+    }
+
+    final hasWeights = values.any(
+      (v) => v.contains('WEIGHT') || v.contains('OZAN'),
+    );
+    final hasCardio = values.any((v) => v.contains('CARDIO'));
+    if (hasWeights && hasCardio) {
+      return false;
+    }
+
+    return true;
+  }
 }

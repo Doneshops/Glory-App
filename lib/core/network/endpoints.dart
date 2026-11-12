@@ -20,6 +20,8 @@ abstract final class Endpoints {
       '/mobile/profile/delete-account/confirm';
   static const String logout = '/mobile/auth/logout';
   static const String refreshToken = '/mobile/auth/refresh';
+  static const String reviewSignup = '/mobile/auth/review-signup';
+  static const String mobileAppConfig = '/mobile/app-config';
 
   // ── Mobile Onboarding ─────────────────────────────────
   static const String onboardingStatus = '/mobile/onboarding/status';
@@ -93,6 +95,10 @@ abstract final class Endpoints {
   static const String mobileWorkoutById = '/mobile/workouts/{id}';
   static const String mobileWorkoutVideos = '/mobile/workouts/{id}/videos';
   static const String mobileWorkoutWeight = '/mobile/workouts/{id}/weight';
+
+  // ── Public video library (no token) ───────────────────
+  static const String mobileVideos = '/mobile/videos';
+  static const String mobileVideosCategories = '/mobile/videos/categories';
 
   // ── Mobile Sandy AI ───────────────────────────────────
   static const String mobileSandyChat = '/mobile/sandy/chat';

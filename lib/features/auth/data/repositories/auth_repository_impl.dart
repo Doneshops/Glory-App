@@ -5,8 +5,10 @@ import '../../../../core/utils/jwt_utils.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/member_entity.dart';
 import '../../domain/entities/otp_sent_entity.dart';
+import '../../domain/entities/review_signup_result.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_api_service.dart';
+import '../datasources/review_signup_remote_api_service.dart';
 import '../mappers/auth_mappers.dart';
 import '../models/complete_registration_request.dart';
 import '../models/confirm_code_request.dart';
@@ -21,10 +23,15 @@ import '../models/update_notifications_request.dart';
 import '../models/verify_otp_request.dart';
 
 final class AuthRepositoryImpl implements AuthRepository {
-  const AuthRepositoryImpl(this._remote, this._secureStorage);
+  const AuthRepositoryImpl(
+    this._remote,
+    this._secureStorage,
+    this._reviewSignup,
+  );
 
   final AuthRemoteApiService _remote;
   final ISecureStorage _secureStorage;
+  final ReviewSignupRemoteApiService _reviewSignup;
 
   @override
   Future<Result<OtpSentEntity>> register({
@@ -149,6 +156,32 @@ final class AuthRepositoryImpl implements AuthRepository {
     }
 
     return Failure((result as Failure).failure);
+  }
+
+  @override
+  Future<bool> isSignupEnabled() => _reviewSignup.isSignupEnabled();
+
+  @override
+  Future<ReviewSignupResult> reviewSignup({
+    required String fullName,
+    required String email,
+    required String password,
+    required String passwordConfirm,
+    String? phone,
+    String? phoneCountryCode,
+  }) async {
+    final result = await _reviewSignup.signup(
+      fullName: fullName,
+      email: email,
+      password: password,
+      passwordConfirm: passwordConfirm,
+      phone: phone,
+      phoneCountryCode: phoneCountryCode,
+    );
+    if (result case ReviewSignupSuccess(:final session)) {
+      await _persistSession(session);
+    }
+    return result;
   }
 
   @override

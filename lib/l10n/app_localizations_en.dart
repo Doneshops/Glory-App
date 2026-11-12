@@ -945,7 +945,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginEmailOrPhoneHint =>
-      'Please enter your email or phone number along with your password to access your account.';
+      'Enter your member ID or username and password to access your account.';
+
+  @override
+  String get loginIdentifier => 'Member ID or username';
+
+  @override
+  String get enterLoginIdentifier => 'Enter your member ID or username';
+
+  @override
+  String get pleaseEnterLoginIdentifier =>
+      'Please enter your member ID or username';
 
   @override
   String get loginSubtitle => 'Sign in to continue';
@@ -1491,6 +1501,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Ask me about workouts, nutrition, or your membership. You can also attach a lab result or an X-ray.';
 
   @override
+  String sandyWelcomeBodyPersonalized(String name) {
+    return 'Welcome, $name. Ask me about workouts, nutrition, or your membership. You can also attach a lab result or an X-ray.';
+  }
+
+  @override
   String get sandyToolbarNew => 'New';
 
   @override
@@ -1581,7 +1596,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sandyMedicalConsent =>
-      'This file is private to you and Sandy. Coaches and staff cannot see it. Sandy explains and refers — this is not a diagnosis. By continuing you agree to store a private summary on your profile.';
+      'Inside the app, this file is visible only to you and Sandy — coaches and staff can\'t see it. To analyse it, it is sent to the third-party AI provider Sandy relies on. Sandy explains and refers — this is not a diagnosis. By continuing you agree to store a private summary on your profile.';
 
   @override
   String get sandyDocumentNoteHint =>
@@ -1966,4 +1981,185 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notAvailable => '—';
+
+  @override
+  String get orLabel => 'or';
+
+  @override
+  String get guestBrowseVideosTitle => 'Explore our video library';
+
+  @override
+  String get guestBrowseVideosSubtitle =>
+      'Workouts and tips, no sign-in needed';
+
+  @override
+  String get videoLibraryTitle => 'Video Library';
+
+  @override
+  String get videoLibrarySearchHint => 'Search videos';
+
+  @override
+  String get videoLibraryAllCategories => 'All';
+
+  @override
+  String get videoLibraryEmptyTitle => 'No videos yet';
+
+  @override
+  String get videoLibraryEmptyDescription =>
+      'New videos will appear here soon.';
+
+  @override
+  String get videoLibraryNoResultsTitle => 'No matching videos';
+
+  @override
+  String get videoLibraryNoResultsDescription =>
+      'Try a different search or category.';
+
+  @override
+  String get videoAudienceMale => 'Men';
+
+  @override
+  String get videoAudienceFemale => 'Women';
+
+  @override
+  String get videoOpenFailed => 'Couldn\'t open the video';
+
+  @override
+  String get videoLibraryLoadFailedTitle => 'Couldn\'t load videos';
+
+  @override
+  String get videoLibraryLoadFailedDescription =>
+      'Check your connection and try again.';
+
+  @override
+  String get videoAboutTitle => 'About this video';
+
+  @override
+  String get signupSubtitle => 'Enter your details to create your account.';
+
+  @override
+  String get phoneOptional => 'Phone Number (optional)';
+
+  @override
+  String get reenterPassword => 'Re-enter your password';
+
+  @override
+  String get signupAccountExists =>
+      'You already have an account — log in instead';
+
+  @override
+  String get signupUnavailable => 'Sign-up isn\'t available right now';
+
+  @override
+  String get signupTryLater => 'Too many attempts. Please try again later';
+
+  @override
+  String get introSkip => 'Skip';
+
+  @override
+  String get introNext => 'Next';
+
+  @override
+  String get introGetStarted => 'Get started';
+
+  @override
+  String get introPage1Tag => 'Fitness for everyone';
+
+  @override
+  String get introPage1Title => 'Your fitness journey starts here';
+
+  @override
+  String get introPage1Body =>
+      'A complete fitness companion with workouts, guided videos and tools to help you reach your goals.';
+
+  @override
+  String get introPage2Tag => 'Video library';
+
+  @override
+  String get introPage2Title => 'Learn every exercise the right way';
+
+  @override
+  String get introPage2Body =>
+      'Step-by-step videos for every machine and muscle group, for both men and women.';
+
+  @override
+  String get introPage3Tag => 'Free access';
+
+  @override
+  String get introPage3Title => 'Train anytime, anywhere';
+
+  @override
+  String get introPage3Body =>
+      'Browse the library for free, no account needed. Log in anytime to unlock bookings, plans and more.';
+
+  @override
+  String get videoLibraryWelcome => 'Welcome';
+
+  @override
+  String get videoLibraryHeroTitle => 'Explore workouts';
+
+  @override
+  String get videoLibraryHeroSubtitle =>
+      'Guided exercise videos for every muscle group';
+
+  @override
+  String get videoFilterTitle => 'Filter videos';
+
+  @override
+  String get videoFilterAudience => 'Audience';
+
+  @override
+  String get videoFilterMuscle => 'Target muscle';
+
+  @override
+  String get videoFilterReset => 'Reset';
+
+  @override
+  String get videoFilterApply => 'Show results';
+
+  @override
+  String get videoRegionCore => 'Core';
+
+  @override
+  String get videoRegionLowerBody => 'Lower body';
+
+  @override
+  String get videoRegionUpperBody => 'Upper body';
+
+  @override
+  String get videoRegionOther => 'Other';
+
+  @override
+  String get sandyConsentTitle => 'Before you chat with Sandy';
+
+  @override
+  String get sandyConsentIntro =>
+      'Sandy is an AI assistant. To answer you, it relies on an external AI service.';
+
+  @override
+  String get sandyConsentDataTitle => 'What is shared';
+
+  @override
+  String get sandyConsentDataBody =>
+      'Your messages, and any files or photos you attach, are sent to a third-party AI provider to generate Sandy\'s replies.';
+
+  @override
+  String get sandyConsentMedicalTitle => 'Not medical advice';
+
+  @override
+  String get sandyConsentMedicalBody =>
+      'Sandy gives general guidance and does not replace a doctor or specialist.';
+
+  @override
+  String get sandyConsentChoiceTitle => 'Your choice';
+
+  @override
+  String get sandyConsentChoiceBody =>
+      'Nothing is sent until you agree. You can keep using the rest of the app without Sandy.';
+
+  @override
+  String get sandyConsentPrivacyLink => 'Read the privacy policy';
+
+  @override
+  String get sandyConsentAgree => 'I agree, start chatting';
 }
