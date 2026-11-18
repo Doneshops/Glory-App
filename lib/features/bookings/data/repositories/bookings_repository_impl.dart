@@ -18,12 +18,14 @@ final class BookingsRepositoryImpl implements BookingsRepository {
     int limit = 10,
     String? status,
     String? sortOrder,
+    String? type,
   }) async {
     final result = await _remote.getBookings(
       page: page,
       limit: limit,
       status: status,
       sortOrder: sortOrder,
+      type: type,
     );
 
     return switch (result) {

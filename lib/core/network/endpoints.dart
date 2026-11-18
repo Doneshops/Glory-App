@@ -90,6 +90,9 @@ abstract final class Endpoints {
   static const String mobileNutritionPlansById =
       '/mobile/nutrition-plans/{id}';
 
+  // ── Mobile Group Classes ──────────────────────────────
+  static const String mobileGroupClasses = '/mobile/group-classes';
+
   // ── Mobile Workouts ───────────────────────────────────
   static const String mobileWorkouts = '/mobile/workouts';
   static const String mobileWorkoutById = '/mobile/workouts/{id}';

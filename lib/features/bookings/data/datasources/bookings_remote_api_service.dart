@@ -21,6 +21,7 @@ final class BookingsRemoteApiService extends ApiService {
     int limit = 10,
     String? status,
     String? sortOrder,
+    String? type,
   }) =>
       _guard(() async {
         final response = await _bookingsApi.getBookings(
@@ -28,6 +29,7 @@ final class BookingsRemoteApiService extends ApiService {
           limit: limit,
           status: status,
           sortOrder: sortOrder,
+          type: type,
         );
         if (!response.success) {
           return Failure(

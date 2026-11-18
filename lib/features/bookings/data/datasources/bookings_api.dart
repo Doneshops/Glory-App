@@ -18,6 +18,7 @@ abstract class BookingsApi {
     @Query('limit') int limit = 10,
     @Query('status') String? status,
     @Query('sortOrder') String? sortOrder,
+    @Query('type') String? type,
   });
 
   @GET(Endpoints.mobileBookingById)

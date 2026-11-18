@@ -6,10 +6,10 @@ import '../models/notifications_api_responses.dart';
 extension NotificationModelX on NotificationModel {
   NotificationEntity toEntity() => NotificationEntity(
         id: id,
-        titleAr: titleAr,
-        titleEn: titleEn,
-        bodyAr: bodyAr,
-        bodyEn: bodyEn,
+        titleAr: _firstNonEmpty(titleAr, titleEn),
+        titleEn: _firstNonEmpty(titleEn, titleAr),
+        bodyAr: _firstNonEmpty(bodyAr, bodyEn),
+        bodyEn: _firstNonEmpty(bodyEn, bodyAr),
         createdAt: createdAt,
         isRead: read,
         type: type,
@@ -32,4 +32,10 @@ extension NotificationsApiResponseX on NotificationsApiResponse {
 
 extension NotificationApiResponseX on NotificationApiResponse {
   NotificationEntity? toEntity() => data?.toEntity();
+}
+
+/// Returns [preferred] unless it's null/blank, then [fallback], else ''.
+String _firstNonEmpty(String? preferred, String? fallback) {
+  if (preferred != null && preferred.trim().isNotEmpty) return preferred;
+  return fallback ?? '';
 }

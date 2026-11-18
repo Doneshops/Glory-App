@@ -2561,6 +2561,42 @@ abstract class AppLocalizations {
   /// **'When you book a personal training session, it will appear here.'**
   String get emptyPrivateSessionsDescription;
 
+  /// No description provided for @emptyGroupClassesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No group classes'**
+  String get emptyGroupClassesTitle;
+
+  /// No description provided for @emptyGroupClassesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no group classes on the schedule for the coming days.'**
+  String get emptyGroupClassesDescription;
+
+  /// No description provided for @workoutProgramsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts'**
+  String get workoutProgramsTab;
+
+  /// No description provided for @groupClassScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get groupClassScheduled;
+
+  /// No description provided for @groupClassFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished'**
+  String get groupClassFinished;
+
+  /// No description provided for @groupClassCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get groupClassCancelled;
+
   /// No description provided for @ptScanSessionTitle.
   ///
   /// In en, this message translates to:

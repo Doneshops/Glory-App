@@ -16,7 +16,8 @@ final class BookingsListCubit extends Cubit<BookingsListState> {
     int limit = 10,
     String? sortOrder,
     String? status,
-    bool privateTrainingOnly = false,
+    /// Booking `type` filter (`PT`, `CLASS`, ...), applied server-side.
+    String? type,
   }) async {
     emit(
       state.copyWith(
@@ -33,17 +34,15 @@ final class BookingsListCubit extends Cubit<BookingsListState> {
       limit: limit,
       sortOrder: sortOrder,
       status: status,
+      type: type,
     );
 
     result.fold(
       onSuccess: (page) {
-        final items = privateTrainingOnly
-            ? page.items.where((b) => b.isPrivateTraining).toList()
-            : page.items;
         emit(
           state.copyWith(
             status: BookingsListStatus.loaded,
-            bookings: items,
+            bookings: page.items,
             page: page.page,
             totalPages: page.totalPages,
           ),
@@ -62,7 +61,8 @@ final class BookingsListCubit extends Cubit<BookingsListState> {
     int limit = 10,
     String? sortOrder,
     String? status,
-    bool privateTrainingOnly = false,
+    /// Booking `type` filter (`PT`, `CLASS`, ...), applied server-side.
+    String? type,
   }) async {
     if (!state.hasMore || state.isLoadingMore || state.isLoading) return;
 
@@ -74,17 +74,15 @@ final class BookingsListCubit extends Cubit<BookingsListState> {
       limit: limit,
       sortOrder: sortOrder,
       status: status,
+      type: type,
     );
 
     result.fold(
       onSuccess: (page) {
-        final items = privateTrainingOnly
-            ? page.items.where((b) => b.isPrivateTraining).toList()
-            : page.items;
         emit(
           state.copyWith(
             status: BookingsListStatus.loaded,
-            bookings: [...state.bookings, ...items],
+            bookings: [...state.bookings, ...page.items],
             page: page.page,
             totalPages: page.totalPages,
           ),

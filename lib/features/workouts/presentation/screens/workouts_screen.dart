@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glory_gym/core/core.dart';
-import 'package:glory_gym/features/bookings/presentation/cubits/session_checkin_scan/session_checkin_scan_cubit.dart';
-import 'package:glory_gym/features/bookings/presentation/utils/pt_session_scan_flow.dart';
+import 'package:glory_gym/features/bookings/presentation/widgets/bookings_by_type_list.dart';
+import 'package:glory_gym/features/group_classes/presentation/widgets/group_classes_schedule_list.dart';
 import 'package:glory_gym/features/home/presentation/widgets/group_class_card.dart';
 import 'package:glory_gym/features/workouts/presentation/cubits/workouts_list/workouts_list_cubit.dart';
 import 'package:go_router/go_router.dart';
 
+/// Tabs of the "تماريني" screen, in display order.
+enum WorkoutsTab { programs, groupClasses, individualSessions }
+
+/// Lets other screens (e.g. home "رؤية الكل") switch the workouts screen to
+/// a specific tab. Fires even when the same tab is requested twice.
+final class WorkoutsTabRequest extends ChangeNotifier {
+  WorkoutsTab _tab = WorkoutsTab.programs;
+  WorkoutsTab get tab => _tab;
+
+  void open(WorkoutsTab tab) {
+    _tab = tab;
+    notifyListeners();
+  }
+}
+
 final class WorkoutsScreen extends StatefulWidget {
   const WorkoutsScreen({super.key});
+
+  static final tabRequest = WorkoutsTabRequest();
 
   @override
   State<WorkoutsScreen> createState() => _WorkoutsScreenState();
@@ -17,11 +34,8 @@ final class WorkoutsScreen extends StatefulWidget {
 final class _WorkoutsScreenState extends State<WorkoutsScreen> {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => sl<WorkoutsListCubit>()..loadWorkouts()),
-        BlocProvider(create: (_) => sl<SessionCheckinScanCubit>()),
-      ],
+    return BlocProvider(
+      create: (_) => sl<WorkoutsListCubit>()..loadWorkouts(),
       child: const _WorkoutsBody(),
     );
   }
@@ -42,10 +56,17 @@ final class _WorkoutsBodyState extends State<_WorkoutsBody> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    WorkoutsScreen.tabRequest.addListener(_onTabRequested);
+  }
+
+  void _onTabRequested() {
+    if (!mounted) return;
+    setState(() => _selectedTabIndex = WorkoutsScreen.tabRequest.tab.index);
   }
 
   @override
   void dispose() {
+    WorkoutsScreen.tabRequest.removeListener(_onTabRequested);
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
@@ -61,12 +82,39 @@ final class _WorkoutsBodyState extends State<_WorkoutsBody> {
   }
 
   List<String> _tabLabels(BuildContext context) => [
+        context.l10n.workoutProgramsTab,
         context.l10n.groupClasses,
         context.l10n.individualSessions,
       ];
 
-  void _openPtSessionScanner(BuildContext context) {
-    PtSessionScanFlow.openScannerAndSubmit(context);
+  /// Tab sources (confirmed with backend):
+  /// - Workouts: coach-assigned programs — `GET /mobile/workouts`.
+  /// - Group classes: weekly schedule — `GET /mobile/group-classes`
+  ///   (members attend without booking).
+  /// - Individual sessions: `GET /mobile/bookings` where `type == "PT"`.
+  Widget _buildTab(BuildContext context) {
+    const listPadding = EdgeInsets.zero;
+    const actionPadding = EdgeInsets.only(top: 16);
+
+    return switch (WorkoutsTab.values[_selectedTabIndex]) {
+      WorkoutsTab.groupClasses => const GroupClassesScheduleList(
+          key: ValueKey('workouts-group-classes'),
+          padding: listPadding,
+        ),
+      WorkoutsTab.individualSessions => BookingsByTypeList(
+          key: const ValueKey('workouts-individual-sessions'),
+          type: BookingTypes.pt,
+          emptyTitle: context.l10n.emptyPrivateSessionsTitle,
+          emptyDescription: context.l10n.emptyPrivateSessionsDescription,
+          showScanAction: true,
+          padding: listPadding,
+          actionPadding: actionPadding,
+        ),
+      WorkoutsTab.programs => _WorkoutCardsTab(
+          key: const ValueKey('workouts-programs'),
+          scrollController: _scrollController,
+        ),
+    };
   }
 
   @override
@@ -130,18 +178,7 @@ final class _WorkoutsBodyState extends State<_WorkoutsBody> {
                       ),
                     );
                   },
-                  child: _selectedTabIndex == 0
-                      ? _WorkoutCardsTab(
-                          key: const ValueKey('workouts-group-classes'),
-                          scrollController: _scrollController,
-                          showScanButton: false,
-                        )
-                      : _WorkoutCardsTab(
-                          key: const ValueKey('workouts-individual-sessions'),
-                          scrollController: _scrollController,
-                          showScanButton: true,
-                          onScanPressed: () => _openPtSessionScanner(context),
-                        ),
+                  child: _buildTab(context),
                 ),
               ),
             ],
@@ -156,18 +193,13 @@ final class _WorkoutCardsTab extends StatelessWidget {
   const _WorkoutCardsTab({
     super.key,
     required this.scrollController,
-    required this.showScanButton,
-    this.onScanPressed,
   });
 
   final ScrollController scrollController;
-  final bool showScanButton;
-  final VoidCallback? onScanPressed;
 
   @override
   Widget build(BuildContext context) {
     final locale = context.l10n.localeName;
-    final isScanning = context.watch<SessionCheckinScanCubit>().state.isSubmitting;
 
     return BlocBuilder<WorkoutsListCubit, WorkoutsListState>(
       builder: (context, state) {
@@ -256,14 +288,6 @@ final class _WorkoutCardsTab extends StatelessWidget {
                 },
               ),
             ),
-            if (showScanButton) ...[
-              const SizedBox(height: 16),
-              AppButton(
-                label: context.l10n.ptScanSessionTitle,
-                isLoading: isScanning,
-                onPressed: isScanning ? null : onScanPressed,
-              ),
-            ],
           ],
         );
       },

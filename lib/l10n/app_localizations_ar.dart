@@ -1310,6 +1310,25 @@ class AppLocalizationsAr extends AppLocalizations {
       'لما تحجز حصة تدريب شخصي، هتظهر هنا.';
 
   @override
+  String get emptyGroupClassesTitle => 'لا توجد حصص جماعية';
+
+  @override
+  String get emptyGroupClassesDescription =>
+      'مفيش حصص جماعية في الجدول خلال الأيام الجاية.';
+
+  @override
+  String get workoutProgramsTab => 'التمارين';
+
+  @override
+  String get groupClassScheduled => 'مجدولة';
+
+  @override
+  String get groupClassFinished => 'انتهت';
+
+  @override
+  String get groupClassCancelled => 'ملغية';
+
+  @override
   String get ptScanSessionTitle => 'مسح QR الحصة';
 
   @override

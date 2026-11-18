@@ -25,6 +25,7 @@ class _BookingsApi implements BookingsApi {
     int limit = 10,
     String? status,
     String? sortOrder,
+    String? type,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -32,6 +33,7 @@ class _BookingsApi implements BookingsApi {
       r'limit': limit,
       r'status': status,
       r'sortOrder': sortOrder,
+      r'type': type,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

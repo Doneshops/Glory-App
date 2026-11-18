@@ -1319,6 +1319,25 @@ class AppLocalizationsEn extends AppLocalizations {
       'When you book a personal training session, it will appear here.';
 
   @override
+  String get emptyGroupClassesTitle => 'No group classes';
+
+  @override
+  String get emptyGroupClassesDescription =>
+      'There are no group classes on the schedule for the coming days.';
+
+  @override
+  String get workoutProgramsTab => 'Workouts';
+
+  @override
+  String get groupClassScheduled => 'Scheduled';
+
+  @override
+  String get groupClassFinished => 'Finished';
+
+  @override
+  String get groupClassCancelled => 'Cancelled';
+
+  @override
   String get ptScanSessionTitle => 'Scan session QR';
 
   @override

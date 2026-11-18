@@ -43,10 +43,10 @@ final class WorkoutInstructorModel {
 @JsonSerializable()
 final class WorkoutVideoModel {
   const WorkoutVideoModel({
-    required this.id,
-    required this.videoUrl,
-    required this.thumbnailUrl,
-    required this.duration,
+    this.id,
+    this.videoUrl,
+    this.thumbnailUrl,
+    this.duration,
     this.stepNumber,
     this.instructionEn,
     this.instructionAr,
@@ -55,10 +55,10 @@ final class WorkoutVideoModel {
   factory WorkoutVideoModel.fromJson(Map<String, dynamic> json) =>
       _$WorkoutVideoModelFromJson(json);
 
-  final String id;
-  final String videoUrl;
-  final String thumbnailUrl;
-  final String duration;
+  final String? id;
+  final String? videoUrl;
+  final String? thumbnailUrl;
+  final String? duration;
   final int? stepNumber;
   final String? instructionEn;
   final String? instructionAr;
@@ -67,20 +67,21 @@ final class WorkoutVideoModel {
 @JsonSerializable()
 final class WorkoutInstructionModel {
   const WorkoutInstructionModel({
-    required this.id,
-    required this.stepNumber,
+    this.id,
+    this.stepNumber,
     this.instructionEn,
     this.instructionAr,
-    required this.videos,
+    this.videos = const [],
   });
 
   factory WorkoutInstructionModel.fromJson(Map<String, dynamic> json) =>
       _$WorkoutInstructionModelFromJson(json);
 
-  final String id;
-  final int stepNumber;
+  final String? id;
+  final int? stepNumber;
   final String? instructionEn;
   final String? instructionAr;
+  @JsonKey(defaultValue: <WorkoutVideoModel>[])
   final List<WorkoutVideoModel> videos;
 }
 
@@ -128,7 +129,7 @@ final class WorkoutAssignmentDetailModel {
     required this.canAddWeight,
     this.instructor,
     required this.workout,
-    required this.instructions,
+    this.instructions = const [],
     required this.createdAt,
   });
 
@@ -148,6 +149,7 @@ final class WorkoutAssignmentDetailModel {
   final bool canAddWeight;
   final WorkoutInstructorModel? instructor;
   final WorkoutInfoModel workout;
+  @JsonKey(defaultValue: <WorkoutInstructionModel>[])
   final List<WorkoutInstructionModel> instructions;
   final DateTime createdAt;
 }

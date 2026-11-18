@@ -6,13 +6,13 @@ part 'notification_model.g.dart';
 final class NotificationModel {
   const NotificationModel({
     required this.id,
-    required this.titleEn,
-    required this.titleAr,
-    required this.bodyEn,
-    required this.bodyAr,
-    required this.type,
+    this.titleEn,
+    this.titleAr,
+    this.bodyEn,
+    this.bodyAr,
+    this.type,
     this.imageUrl,
-    required this.read,
+    this.read = false,
     this.readAt,
     required this.createdAt,
   });
@@ -21,12 +21,16 @@ final class NotificationModel {
       _$NotificationModelFromJson(json);
 
   final String id;
-  final String titleEn;
-  final String titleAr;
-  final String bodyEn;
-  final String bodyAr;
-  final String type;
+
+  // Dashboard push notifications may be sent in one language only, so any
+  // of the title/body fields can be null — the mapper falls back to the other.
+  final String? titleEn;
+  final String? titleAr;
+  final String? bodyEn;
+  final String? bodyAr;
+  final String? type;
   final String? imageUrl;
+  @JsonKey(defaultValue: false)
   final bool read;
   final DateTime? readAt;
   final DateTime createdAt;

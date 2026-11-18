@@ -7,6 +7,9 @@ abstract interface class BookingsRepository {
     int limit = 10,
     String? status,
     String? sortOrder,
+
+    /// Server-side filter on booking type: `PT`, `CLASS`, `APPOINTMENT`, `GYM`.
+    String? type,
   });
 
   Future<Result<BookingEntity>> getBookingById(String id);

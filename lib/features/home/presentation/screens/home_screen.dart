@@ -6,23 +6,26 @@ import 'package:glory_gym/features/auth/presentation/cubits/user_profile/user_pr
 import 'package:glory_gym/features/bookings/presentation/bookings_refresh_notifier.dart';
 import 'package:glory_gym/features/bookings/presentation/cubits/bookings_list/bookings_list_cubit.dart';
 import 'package:glory_gym/features/bookings/presentation/cubits/session_checkin_scan/session_checkin_scan_cubit.dart';
+import 'package:glory_gym/features/bookings/presentation/utils/booking_cancel_ui.dart';
 import 'package:glory_gym/features/bookings/presentation/utils/booking_check_in_ui.dart';
 import 'package:glory_gym/features/bookings/presentation/utils/pt_session_scan_flow.dart';
 import 'package:glory_gym/features/checkin/presentation/cubits/gym_qr/gym_qr_cubit.dart';
+import 'package:glory_gym/features/home/presentation/widgets/home_group_classes_tab.dart';
 import 'package:glory_gym/features/home/presentation/widgets/home_tab_contents.dart';
 import 'package:glory_gym/features/notifications/presentation/cubits/notifications_unread/notifications_unread_cubit.dart';
-import 'package:glory_gym/features/workouts/presentation/cubits/workouts_list/workouts_list_cubit.dart';
 import 'package:go_router/go_router.dart';
 
 final class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     this.onOpenBookingsTab,
-    this.onOpenWorkoutsTab,
+    this.onOpenGroupClasses,
   });
 
   final VoidCallback? onOpenBookingsTab;
-  final VoidCallback? onOpenWorkoutsTab;
+
+  /// "رؤية الكل" on the group classes tab.
+  final VoidCallback? onOpenGroupClasses;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -44,9 +47,6 @@ final class _HomeScreenState extends State<HomeScreen> {
         BlocProvider(create: (_) => sl<GymQrCubit>()),
         BlocProvider(
           create: (_) => sl<BookingsListCubit>()..loadBookings(limit: 2),
-        ),
-        BlocProvider(
-          create: (_) => sl<WorkoutsListCubit>()..loadWorkouts(limit: 1),
         ),
         BlocProvider(create: (_) => sl<SessionCheckinScanCubit>()),
       ],
@@ -104,7 +104,7 @@ final class _HomeScreenState extends State<HomeScreen> {
                 selectedTabIndex: _selectedTabIndex,
                 tabLabels: _tabLabels(providerContext),
                 onOpenBookingsTab: widget.onOpenBookingsTab,
-                onOpenWorkoutsTab: widget.onOpenWorkoutsTab,
+                onOpenGroupClasses: widget.onOpenGroupClasses,
                 onTabSelected: (index) =>
                     setState(() => _selectedTabIndex = index),
               ),
@@ -122,19 +122,18 @@ final class _HomeBody extends StatelessWidget {
     required this.tabLabels,
     required this.onTabSelected,
     this.onOpenBookingsTab,
-    this.onOpenWorkoutsTab,
+    this.onOpenGroupClasses,
   });
 
   final int selectedTabIndex;
   final List<String> tabLabels;
   final ValueChanged<int> onTabSelected;
   final VoidCallback? onOpenBookingsTab;
-  final VoidCallback? onOpenWorkoutsTab;
+  final VoidCallback? onOpenGroupClasses;
 
   Widget _tabContent(BuildContext context) {
     final qrState = context.watch<GymQrCubit>().state;
     final bookingsState = context.watch<BookingsListCubit>().state;
-    final workoutsState = context.watch<WorkoutsListCubit>().state;
     final locale = context.l10n.localeName;
 
     return switch (selectedTabIndex) {
@@ -164,7 +163,7 @@ final class _HomeBody extends StatelessWidget {
             onViewAll: onOpenBookingsTab,
             onCheckIn: (id) =>
                 context.read<BookingsListCubit>().checkInBooking(id),
-            onCancel: (id) => _confirmCancel(context, id),
+            onCancel: (id) => BookingCancelUi.confirmAndCancel(context, id),
             onEvaluate: (id) => context.push(
               AppRoutes.classEvaluation,
               extra: id,
@@ -180,16 +179,9 @@ final class _HomeBody extends StatelessWidget {
             ),
           ),
         ),
-      _ => AppPlatformRefreshScroll(
+      _ => HomeGroupClassesTab(
           key: const ValueKey('home-tab-classes'),
-          fillViewport: workoutsState.workouts.isEmpty,
-          onRefresh: () => context.read<WorkoutsListCubit>().loadWorkouts(
-                refresh: true,
-                limit: 1,
-              ),
-          child: HomeGroupClassesTabContent(
-            onViewAll: onOpenWorkoutsTab,
-          ),
+          onViewAll: onOpenGroupClasses,
         ),
     };
   }
@@ -270,35 +262,5 @@ final class _HomeBody extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<void> _confirmCancel(BuildContext context, String bookingId) async {
-    final shouldCancel = await AppConfirmDialog.show(
-      context,
-      title: context.l10n.cancelClass,
-      message: context.l10n.confirmCancelClass,
-      confirmLabel: context.l10n.cancelClass,
-    );
-
-    if (shouldCancel != true || !context.mounted) return;
-
-    final success =
-        await context.read<BookingsListCubit>().cancelBooking(bookingId);
-
-    if (!context.mounted) return;
-
-    if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.classCancelledSuccess)),
-      );
-      return;
-    }
-
-    final error = context.read<BookingsListCubit>().state.errorMessage;
-    if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
-      );
-    }
   }
 }

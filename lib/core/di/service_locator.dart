@@ -35,6 +35,10 @@ import '../../features/about/presentation/cubits/faqs/faqs_cubit.dart';
 import '../../features/about/presentation/cubits/feedback/feedback_cubit.dart';
 import '../../features/about/presentation/cubits/info_page/info_page_cubit.dart';
 import '../../features/bookings/data/datasources/bookings_api.dart';
+import '../../features/group_classes/data/datasources/group_classes_remote_api_service.dart';
+import '../../features/group_classes/data/repositories/group_classes_repository_impl.dart';
+import '../../features/group_classes/domain/repositories/group_classes_repository.dart';
+import '../../features/group_classes/presentation/cubits/group_classes/group_classes_cubit.dart';
 import '../../features/bookings/data/datasources/bookings_remote_api_service.dart';
 import '../../features/bookings/data/repositories/bookings_repository_impl.dart';
 import '../../features/bookings/domain/repositories/bookings_repository.dart';
@@ -125,6 +129,7 @@ Future<void> setupServiceLocator() async {
   _registerContent();
   _registerCheckin();
   _registerBookings();
+  _registerGroupClasses();
   _registerBodyComposition();
   _registerInbody();
   _registerNutritionPlans();
@@ -258,6 +263,16 @@ void _registerCheckin() {
 
   sl.registerFactory<GymQrCubit>(() => GymQrCubit(sl()));
   sl.registerFactory<QrScanCubit>(() => QrScanCubit(sl()));
+}
+
+void _registerGroupClasses() {
+  sl.registerLazySingleton<GroupClassesRemoteApiService>(
+    () => GroupClassesRemoteApiService(sl()),
+  );
+  sl.registerLazySingleton<GroupClassesRepository>(
+    () => GroupClassesRepositoryImpl(sl()),
+  );
+  sl.registerFactory<GroupClassesCubit>(() => GroupClassesCubit(sl()));
 }
 
 void _registerBookings() {

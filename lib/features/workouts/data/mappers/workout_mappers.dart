@@ -47,8 +47,8 @@ extension WorkoutAssignmentDetailModelX on WorkoutAssignmentDetailModel {
 
 extension WorkoutInstructionModelX on WorkoutInstructionModel {
   WorkoutInstructionEntity toEntity() => WorkoutInstructionEntity(
-        id: id,
-        stepNumber: stepNumber,
+        id: id ?? 'step-${stepNumber ?? 0}',
+        stepNumber: stepNumber ?? 0,
         instructionAr: instructionAr ?? instructionEn ?? '',
         instructionEn: instructionEn ?? instructionAr ?? '',
         videos: videos.map((video) => video.toEntity()).toList(),
@@ -57,10 +57,10 @@ extension WorkoutInstructionModelX on WorkoutInstructionModel {
 
 extension WorkoutVideoModelX on WorkoutVideoModel {
   WorkoutVideoEntity toEntity() => WorkoutVideoEntity(
-        id: id,
-        videoUrl: videoUrl,
-        thumbnailUrl: thumbnailUrl,
-        duration: duration,
+        id: id ?? videoUrl ?? '',
+        videoUrl: videoUrl ?? '',
+        thumbnailUrl: thumbnailUrl ?? '',
+        duration: duration ?? '',
         stepNumber: stepNumber,
         instructionAr: instructionAr,
         instructionEn: instructionEn,

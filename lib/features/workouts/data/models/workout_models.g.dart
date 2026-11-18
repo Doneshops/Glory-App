@@ -44,10 +44,10 @@ Map<String, dynamic> _$WorkoutInstructorModelToJson(
 
 WorkoutVideoModel _$WorkoutVideoModelFromJson(Map<String, dynamic> json) =>
     WorkoutVideoModel(
-      id: json['id'] as String,
-      videoUrl: json['videoUrl'] as String,
-      thumbnailUrl: json['thumbnailUrl'] as String,
-      duration: json['duration'] as String,
+      id: json['id'] as String?,
+      videoUrl: json['videoUrl'] as String?,
+      thumbnailUrl: json['thumbnailUrl'] as String?,
+      duration: json['duration'] as String?,
       stepNumber: (json['stepNumber'] as num?)?.toInt(),
       instructionEn: json['instructionEn'] as String?,
       instructionAr: json['instructionAr'] as String?,
@@ -67,15 +67,15 @@ Map<String, dynamic> _$WorkoutVideoModelToJson(WorkoutVideoModel instance) =>
 WorkoutInstructionModel _$WorkoutInstructionModelFromJson(
   Map<String, dynamic> json,
 ) => WorkoutInstructionModel(
-  id: json['id'] as String,
-  stepNumber: (json['stepNumber'] as num).toInt(),
+  id: json['id'] as String?,
+  stepNumber: (json['stepNumber'] as num?)?.toInt(),
   instructionEn: json['instructionEn'] as String?,
   instructionAr: json['instructionAr'] as String?,
-  videos: json['videos'] == null
-      ? const <WorkoutVideoModel>[]
-      : (json['videos'] as List<dynamic>)
-          .map((e) => WorkoutVideoModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+  videos:
+      (json['videos'] as List<dynamic>?)
+          ?.map((e) => WorkoutVideoModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
 );
 
 Map<String, dynamic> _$WorkoutInstructionModelToJson(
@@ -148,9 +148,13 @@ WorkoutAssignmentDetailModel _$WorkoutAssignmentDetailModelFromJson(
           json['instructor'] as Map<String, dynamic>,
         ),
   workout: WorkoutInfoModel.fromJson(json['workout'] as Map<String, dynamic>),
-  instructions: (json['instructions'] as List<dynamic>)
-      .map((e) => WorkoutInstructionModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
+  instructions:
+      (json['instructions'] as List<dynamic>?)
+          ?.map(
+            (e) => WorkoutInstructionModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList() ??
+      [],
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 

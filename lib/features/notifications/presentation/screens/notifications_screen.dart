@@ -79,6 +79,14 @@ final class _NotificationsView extends StatelessWidget {
 
     context.read<NotificationsUnreadCubit>().fetchUnreadCount();
 
+    // Chat-related notifications ("sent you a message", "is now your coach")
+    // have nothing more to show in a sheet — open the chat directly.
+    if (_isChatNotification(notification)) {
+      context.read<NotificationsListCubit>().clearSelected();
+      await context.push(AppRoutes.coachChat);
+      return;
+    }
+
     final locale = context.l10n.localeName;
 
     await showModalBottomSheet<void>(
@@ -108,6 +116,16 @@ final class _NotificationsView extends StatelessWidget {
       if (!context.mounted) return;
       await context.push(AppRoutes.myNutritionPlan);
     }
+  }
+
+  static bool _isChatNotification(NotificationEntity notification) {
+    final text = '${notification.titleEn} ${notification.bodyEn}'.toLowerCase();
+    return text.contains('sent you a message') ||
+        text.contains('open the chat') ||
+        text.contains('say hi in the chat') ||
+        notification.titleAr.contains('بعتلك رسالة') ||
+        notification.bodyAr.contains('بالشات') ||
+        notification.bodyAr.contains('افتح الشات');
   }
 
   @override
@@ -387,7 +405,7 @@ final class _NotifDetailSheet extends StatelessWidget {
               ),
               const SizedBox(height: 28),
               AppButton(
-                label: context.l10n.previous,
+                label: context.l10n.close,
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],

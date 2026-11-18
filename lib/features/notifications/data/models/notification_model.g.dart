@@ -9,13 +9,13 @@ part of 'notification_model.dart';
 NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
     NotificationModel(
       id: json['id'] as String,
-      titleEn: json['titleEn'] as String,
-      titleAr: json['titleAr'] as String,
-      bodyEn: json['bodyEn'] as String,
-      bodyAr: json['bodyAr'] as String,
-      type: json['type'] as String,
+      titleEn: json['titleEn'] as String?,
+      titleAr: json['titleAr'] as String?,
+      bodyEn: json['bodyEn'] as String?,
+      bodyAr: json['bodyAr'] as String?,
+      type: json['type'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      read: json['read'] as bool,
+      read: json['read'] as bool? ?? false,
       readAt: json['readAt'] == null
           ? null
           : DateTime.parse(json['readAt'] as String),

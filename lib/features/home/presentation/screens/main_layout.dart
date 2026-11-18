@@ -60,14 +60,17 @@ final class _MainLayoutState extends State<MainLayout> {
         children: [
           HomeScreen(
             onOpenBookingsTab: () => _onTabChanged(AppNavTab.bookings),
-            onOpenWorkoutsTab: () => _onTabChanged(AppNavTab.workouts),
+            onOpenGroupClasses: () {
+              WorkoutsScreen.tabRequest.open(WorkoutsTab.groupClasses);
+              _onTabChanged(AppNavTab.workouts);
+            },
           ),
           const BookingsScreen(),
           BlocProvider.value(
             value: sl<SandyChatCubit>()..initialize(),
             child: const GloryAiScreen(),
           ),
-          WorkoutsScreen(),
+          const WorkoutsScreen(),
           const SettingsScreen(),
         ],
       ),

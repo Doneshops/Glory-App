@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glory_gym/core/core.dart';
 import 'package:glory_gym/features/bookings/domain/entities/booking_entity.dart';
 import 'package:glory_gym/features/bookings/presentation/widgets/booking_card.dart';
-import 'package:glory_gym/features/home/presentation/widgets/group_class_card.dart';
-import 'package:glory_gym/features/workouts/presentation/cubits/workouts_list/workouts_list_cubit.dart';
-import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:glory_gym/core/l10n/l10n.dart';
 
@@ -156,11 +152,16 @@ final class _HomeQrCardState extends State<_HomeQrCard>
   }
 }
 
-/// Appointments tab — shows latest bookings with a "view all" link.
+/// Bookings preview (appointments / group classes tabs) with a "view all"
+/// link. [title], [emptyTitle] and [emptyDescription] default to the
+/// appointments copy.
 final class HomeAppointmentsTabContent extends StatelessWidget {
   const HomeAppointmentsTabContent({
     super.key,
     required this.bookings,
+    this.title,
+    this.emptyTitle,
+    this.emptyDescription,
     required this.locale,
     required this.isLoading,
     this.onViewAll,
@@ -172,6 +173,9 @@ final class HomeAppointmentsTabContent extends StatelessWidget {
   });
 
   final List<BookingEntity> bookings;
+  final String? title;
+  final String? emptyTitle;
+  final String? emptyDescription;
   final String locale;
   final bool isLoading;
   final VoidCallback? onViewAll;
@@ -192,7 +196,7 @@ final class HomeAppointmentsTabContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                context.l10n.recentBookings,
+                title ?? context.l10n.recentBookings,
                 style: context.highlightBold.copyWith(
                   color: AppColors.neutral900,
                 ),
@@ -216,8 +220,9 @@ final class HomeAppointmentsTabContent extends StatelessWidget {
           Expanded(
             child: AppEmptyState(
               icon: AppEmptyIcons.bookings,
-              title: context.l10n.emptyBookingsTitle,
-              description: context.l10n.emptyBookingsDescription,
+              title: emptyTitle ?? context.l10n.emptyBookingsTitle,
+              description:
+                  emptyDescription ?? context.l10n.emptyBookingsDescription,
               compact: true,
             ),
           )
@@ -251,101 +256,6 @@ final class HomeAppointmentsTabContent extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-      ],
-    );
-  }
-}
-
-/// Group classes tab — latest assigned workout from GET /mobile/workouts.
-final class HomeGroupClassesTabContent extends StatelessWidget {
-  const HomeGroupClassesTabContent({super.key, this.onViewAll});
-
-  final VoidCallback? onViewAll;
-
-  @override
-  Widget build(BuildContext context) {
-    final locale = context.l10n.localeName;
-    final workoutsState = context.watch<WorkoutsListCubit>().state;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppEntrance(
-          delay: const Duration(milliseconds: 40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                context.l10n.groupClasses,
-                style: context.highlightBold.copyWith(
-                  color: AppColors.neutral900,
-                ),
-              ),
-              GestureDetector(
-                onTap: onViewAll,
-                child: Text(
-                  context.l10n.seeAll,
-                  style: context.captionRegular.copyWith(
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        if (workoutsState.isLoading && workoutsState.workouts.isEmpty)
-          const Expanded(child: Center(child: CircularProgressIndicator()))
-        else if (workoutsState.status == WorkoutsListStatus.failure &&
-            workoutsState.workouts.isEmpty)
-          Expanded(
-            child: Center(
-              child: Text(
-                workoutsState.errorMessage ?? context.l10n.errorTryAgain,
-                style: context.captionRegular,
-              ),
-            ),
-          )
-        else if (workoutsState.workouts.isEmpty)
-          Expanded(
-            child: AppEmptyState(
-              icon: AppEmptyIcons.workouts,
-              title: context.l10n.emptyWorkoutsTitle,
-              description: context.l10n.emptyWorkoutsDescription,
-              compact: true,
-            ),
-          )
-        else
-          ...workoutsState.workouts.asMap().entries.map(
-            (entry) {
-              final workout = entry.value;
-              final item = WorkoutUtils.toGroupClassItem(
-                workout,
-                l10n: context.l10n,
-                locale: locale,
-              );
-
-              return AppEntrance(
-                delay: Duration(milliseconds: 80 + (entry.key * 90)),
-                offset: const Offset(0, 0.07),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 14),
-                  child: GestureDetector(
-                    onTap: () => context.push('/workouts/${workout.id}'),
-                    child: GroupClassCard(
-                      item: item,
-                      onEvaluate: item.status == GroupClassStatus.completed
-                          ? () => context.push(
-                                AppRoutes.classEvaluation,
-                                extra: '',
-                              )
-                          : null,
-                    ),
-                  ),
-                ),
-              );
-            },
           ),
       ],
     );
