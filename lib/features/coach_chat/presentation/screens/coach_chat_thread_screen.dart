@@ -17,7 +17,7 @@ import '../widgets/chat_input_bar.dart';
 import '../widgets/chat_message_bubble.dart';
 import '../widgets/coach_chat_header.dart';
 
-final class CoachChatThreadScreen extends StatefulWidget {
+final class CoachChatThreadScreen extends StatelessWidget {
   const CoachChatThreadScreen({
     super.key,
     required this.conversationId,
@@ -28,10 +28,40 @@ final class CoachChatThreadScreen extends StatefulWidget {
   final ChatConversationEntity? conversation;
 
   @override
-  State<CoachChatThreadScreen> createState() => _CoachChatThreadScreenState();
+  Widget build(BuildContext context) {
+    final instructorName =
+        conversation?.instructor.fullName ?? context.l10n.coachChat;
+    final instructorAvatarUrl = conversation?.instructor.avatarUrl;
+
+    return BlocProvider(
+      create: (_) => CoachChatThreadCubit(
+        sl(),
+        conversationId: conversationId,
+        instructorName: instructorName,
+        instructorAvatarUrl: instructorAvatarUrl,
+      )..openThread(),
+      child: _CoachChatThreadView(
+        instructorName: instructorName,
+        instructorAvatarUrl: instructorAvatarUrl,
+      ),
+    );
+  }
 }
 
-final class _CoachChatThreadScreenState extends State<CoachChatThreadScreen>
+final class _CoachChatThreadView extends StatefulWidget {
+  const _CoachChatThreadView({
+    required this.instructorName,
+    this.instructorAvatarUrl,
+  });
+
+  final String instructorName;
+  final String? instructorAvatarUrl;
+
+  @override
+  State<_CoachChatThreadView> createState() => _CoachChatThreadViewState();
+}
+
+final class _CoachChatThreadViewState extends State<_CoachChatThreadView>
     with WidgetsBindingObserver {
   final _scrollController = ScrollController();
   bool _didInitialScroll = false;
@@ -84,73 +114,63 @@ final class _CoachChatThreadScreenState extends State<CoachChatThreadScreen>
 
   @override
   Widget build(BuildContext context) {
-    final conversation = widget.conversation;
-    final instructorName =
-        conversation?.instructor.fullName ?? context.l10n.coachChat;
-    final instructorAvatarUrl = conversation?.instructor.avatarUrl;
+    final instructorName = widget.instructorName;
+    final instructorAvatarUrl = widget.instructorAvatarUrl;
 
-    return BlocProvider(
-      create: (_) => CoachChatThreadCubit(
-        sl(),
-        conversationId: widget.conversationId,
-        instructorName: instructorName,
-        instructorAvatarUrl: instructorAvatarUrl,
-      )..openThread(),
-      child: BlocConsumer<CoachChatThreadCubit, CoachChatThreadState>(
-        listenWhen: (previous, current) =>
-            previous.messages.length != current.messages.length ||
-            previous.status != current.status,
-        listener: (context, state) {
-          if (state.status == CoachChatThreadStatus.loaded &&
-              state.messages.isNotEmpty) {
-            if (!_didInitialScroll) {
-              _scrollToBottom(animate: false);
-              _didInitialScroll = true;
-            } else {
-              _scrollToBottom();
-            }
+    return BlocConsumer<CoachChatThreadCubit, CoachChatThreadState>(
+      listenWhen: (previous, current) =>
+          previous.messages.length != current.messages.length ||
+          previous.status != current.status,
+      listener: (context, state) {
+        if (state.status == CoachChatThreadStatus.loaded &&
+            state.messages.isNotEmpty) {
+          if (!_didInitialScroll) {
+            _scrollToBottom(animate: false);
+            _didInitialScroll = true;
+          } else {
+            _scrollToBottom();
           }
+        }
 
-          if (state.status == CoachChatThreadStatus.loaded) {
-            context.read<CoachChatUnreadCubit>().fetchUnreadCount();
-          }
-        },
-        builder: (context, state) {
-          return AppScaffold(
-            appBar: CoachChatHeader(
-              coachName: instructorName,
-              subtitle: context.l10n.coachChatWithInstructor,
-              avatarUrl: instructorAvatarUrl,
+        if (state.status == CoachChatThreadStatus.loaded) {
+          context.read<CoachChatUnreadCubit>().fetchUnreadCount();
+        }
+      },
+      builder: (context, state) {
+        return AppScaffold(
+          appBar: CoachChatHeader(
+            coachName: instructorName,
+            subtitle: context.l10n.coachChatWithInstructor,
+            avatarUrl: instructorAvatarUrl,
+          ),
+          body: DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.white, AppColors.neutral100],
+              ),
             ),
-            body: DecoratedBox(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [AppColors.white, AppColors.neutral100],
+            child: Column(
+              children: [
+                Expanded(
+                  child: _MessagesBody(
+                    state: state,
+                    scrollController: _scrollController,
+                    instructorAvatarUrl: instructorAvatarUrl,
+                    onRetry: () =>
+                        context.read<CoachChatThreadCubit>().openThread(),
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: _MessagesBody(
-                      state: state,
-                      scrollController: _scrollController,
-                      instructorAvatarUrl: instructorAvatarUrl,
-                      onRetry: () =>
-                          context.read<CoachChatThreadCubit>().openThread(),
-                    ),
-                  ),
-                  ChatInputBar(
-                    enabled: state.status != CoachChatThreadStatus.loading,
-                    onSend: context.read<CoachChatThreadCubit>().sendMessage,
-                  ),
-                ],
-              ),
+                ChatInputBar(
+                  enabled: state.status != CoachChatThreadStatus.loading,
+                  onSend: context.read<CoachChatThreadCubit>().sendMessage,
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -225,10 +245,7 @@ final class _MessagesBody extends StatelessWidget {
 }
 
 final class _ThreadErrorView extends StatelessWidget {
-  const _ThreadErrorView({
-    required this.message,
-    required this.onRetry,
-  });
+  const _ThreadErrorView({required this.message, required this.onRetry});
 
   final String message;
   final VoidCallback onRetry;
@@ -293,12 +310,8 @@ ChatMessageEntity _placeholderMessage(int index) {
   return ChatMessageEntity(
     id: 'skeleton_$index',
     conversationId: 'skeleton',
-    senderType:
-        isMember ? ChatSenderType.member : ChatSenderType.instructor,
-    sender: const ChatParticipantEntity(
-      id: 'skeleton',
-      fullName: 'Loading',
-    ),
+    senderType: isMember ? ChatSenderType.member : ChatSenderType.instructor,
+    sender: const ChatParticipantEntity(id: 'skeleton', fullName: 'Loading'),
     body: 'Loading message placeholder',
     read: true,
     createdAt: DateTime(2026, 8, 10, 12, index),
