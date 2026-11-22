@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/l10n/locale_service.dart';
+import '../../../../core/models/content_args.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_styles_extension.dart';
@@ -160,6 +161,14 @@ final class _LoginScreenState extends State<LoginScreen>
                           accepted: _termsAccepted,
                           onToggle: () =>
                               setState(() => _termsAccepted = !_termsAccepted),
+                          onPrivacyTap: () => context.push(
+                            AppRoutes.simpleContent,
+                            extra: const SimpleContentArgs(pageKey: 'PRIVACY'),
+                          ),
+                          onTermsTap: () => context.push(
+                            AppRoutes.simpleContent,
+                            extra: const SimpleContentArgs(pageKey: 'TERMS'),
+                          ),
                         ),
                         // 10.vertical,
                         // _ForgotPasswordLink(

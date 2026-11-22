@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_styles_extension.dart';
@@ -51,7 +52,10 @@ final class AppPrimaryHeader extends StatelessWidget
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: GestureDetector(
-                  onTap: onBack ?? () => Navigator.of(context).maybePop(),
+                  onTap: onBack ??
+                      () {
+                        if (context.canPop()) context.pop();
+                      },
                   child: AppNavBackIcon(fit: BoxFit.scaleDown),
                 ),
               ),

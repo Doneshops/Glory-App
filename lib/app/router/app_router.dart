@@ -60,10 +60,13 @@ import '../../core/widgets/app_coach_chat_fab_overlay.dart';
 
 /// Application route configuration.
 
+final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+
 final class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.splash,
     // initialLocation: AppRoutes.subscriptionQuestionnaire,
     debugLogDiagnostics: false,
@@ -350,6 +353,7 @@ final class AppRouter {
     GoRoute(
       path: AppRoutes.simpleContent,
       name: 'simpleContent',
+      parentNavigatorKey: rootNavigatorKey,
       builder: (_, state) => SimpleContentScreen(
         args: state.extra as SimpleContentArgs,
       ),

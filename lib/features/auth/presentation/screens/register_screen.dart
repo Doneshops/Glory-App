@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/models/content_args.dart';
 import '../../../../core/models/otp_args.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_styles_extension.dart';
 import '../../../../core/utils/app_validators.dart';
@@ -159,6 +161,14 @@ final class _RegisterScreenState extends State<RegisterScreen> {
                           accepted: _termsAccepted,
                           onToggle: () =>
                               setState(() => _termsAccepted = !_termsAccepted),
+                          onPrivacyTap: () => context.push(
+                            AppRoutes.simpleContent,
+                            extra: const SimpleContentArgs(pageKey: 'PRIVACY'),
+                          ),
+                          onTermsTap: () => context.push(
+                            AppRoutes.simpleContent,
+                            extra: const SimpleContentArgs(pageKey: 'TERMS'),
+                          ),
                         ),
                         16.vertical,
                         AppDividerLabel(label: context.l10n.quickLoginWith),
